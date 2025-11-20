@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LFPIORPI - Obligaciones 2025 y Plan 2026</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--primary:#1e3a5f;--primary-light:#2d5a8a;--accent:#00d4aa;--warning:#f59e0b;--danger:#ef4444;--success:#10b981;--info:#3b82f6;--bg-dark:#0f172a;--bg-card:#1e293b;--text:#f1f5f9;--text-muted:#94a3b8;--border:#334155}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg-dark);color:var(--text);min-height:100vh;font-size:14px}
+    .header{background:linear-gradient(135deg,var(--primary),var(--primary-light));padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--accent)}
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),#00a88a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+    .logo-text h1{font-size:1.4rem;letter-spacing:1px}
+    .logo-text span{font-size:0.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:2px}
+    .header-right{display:flex;align-items:center;gap:1.5rem}
+    .client-info{text-align:right;padding-right:1rem;border-right:1px solid rgba(255,255,255,0.2)}
+    .client-info .name{font-weight:600;font-size:0.9rem}
+    .client-info .rfc{font-size:0.75rem;color:var(--text-muted)}
+    .date-badge{background:var(--bg-dark);padding:0.5rem 1rem;border-radius:8px;font-size:0.8rem;border:1px solid var(--accent)}
+    .main{max-width:1400px;margin:0 auto;padding:1.5rem}
+    
+    /* Tabs */
+    .tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem}
+    .tab{padding:0.75rem 1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:10px 10px 0 0;cursor:pointer;font-weight:600;font-size:0.85rem;transition:all 0.3s}
+    .tab.active{background:linear-gradient(135deg,var(--accent),#00a88a);color:var(--bg-dark);border-color:var(--accent)}
+    .tab:not(.active):hover{border-color:var(--accent)}
+    .tab i{margin-right:0.5rem}
+    
+    /* Section Title */
+    .section-title{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)}
+    .section-title h2{font-size:1.1rem}
+    .section-title i{color:var(--accent)}
+    .section-title .year-badge{background:var(--accent);color:var(--bg-dark);padding:0.25rem 0.75rem;border-radius:6px;font-size:0.75rem;font-weight:700;margin-left:auto}
+    
+    /* Status Banner */
+    .status-banner{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+    .status-card{background:var(--bg-card);border-radius:12px;padding:1.25rem;border:1px solid var(--border);position:relative;overflow:hidden}
+    .status-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+    .status-card.green::before{background:var(--success)}
+    .status-card.blue::before{background:var(--info)}
+    .status-card .header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+    .status-card h3{font-size:0.9rem;display:flex;align-items:center;gap:0.5rem}
+    .status-card h3 i{color:var(--accent)}
+    .status-card .badge{padding:0.2rem 0.6rem;border-radius:6px;font-size:0.7rem;font-weight:600}
+    .status-card .badge.success{background:rgba(16,185,129,0.2);color:var(--success)}
+    .status-card .badge.info{background:rgba(59,130,246,0.2);color:var(--info)}
+    .mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem}
+    .mini-stat{background:var(--bg-dark);padding:0.75rem;border-radius:8px;text-align:center}
+    .mini-stat .icon{font-size:1.1rem;margin-bottom:0.4rem}
+    .mini-stat .icon.success{color:var(--success)}
+    .mini-stat .icon.warning{color:var(--warning)}
+    .mini-stat .icon.info{color:var(--info)}
+    .mini-stat .icon.muted{color:var(--text-muted)}
+    .mini-stat .label{font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;margin-bottom:0.2rem}
+    .mini-stat .value{font-size:0.75rem;font-weight:600}
+    
+    /* Progress */
+    .progress-row{display:flex;align-items:center;gap:1rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+    .progress-row span{font-size:0.8rem;color:var(--text-muted);white-space:nowrap}
+    .progress-bar{flex:1;height:8px;background:var(--bg-dark);border-radius:4px;overflow:hidden}
+    .progress-bar .fill{height:100%;border-radius:4px}
+    .progress-bar .fill.green{background:linear-gradient(90deg,var(--success),var(--accent));width:92%}
+    .progress-bar .fill.blue{background:linear-gradient(90deg,var(--info),var(--accent));width:15%}
+    .progress-row strong{font-size:0.85rem}
+    
+    /* Checklist Tables */
+    .checklist-container{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+    .checklist-panel{background:var(--bg-card);border-radius:12px;border:1px solid var(--border);overflow:hidden}
+    .checklist-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem}
+    .checklist-header h3{font-size:0.9rem}
+    .checklist-header i{color:var(--accent)}
+    .checklist-header .count{margin-left:auto;background:var(--bg-dark);padding:0.2rem 0.6rem;border-radius:6px;font-size:0.75rem}
+    .checklist-body{max-height:400px;overflow-y:auto}
+    .check-item{display:flex;align-items:flex-start;gap:0.75rem;padding:0.9rem 1.25rem;border-bottom:1px solid var(--border);transition:background 0.2s}
+    .check-item:last-child{border-bottom:none}
+    .check-item:hover{background:rgba(0,212,170,0.05)}
+    .check-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;margin-top:2px}
+    .check-icon.done{background:rgba(16,185,129,0.2);color:var(--success)}
+    .check-icon.pending{background:rgba(245,158,11,0.2);color:var(--warning)}
+    .check-icon.plan{background:rgba(59,130,246,0.2);color:var(--info)}
+    .check-icon.na{background:rgba(148,163,184,0.15);color:var(--text-muted)}
+    .check-content{flex:1;min-width:0}
+    .check-content h4{font-size:0.82rem;font-weight:600;margin-bottom:0.25rem}
+    .check-content p{font-size:0.72rem;color:var(--text-muted);line-height:1.4}
+    .check-meta{display:flex;gap:0.5rem;margin-top:0.4rem;flex-wrap:wrap}
+    .check-tag{padding:0.15rem 0.45rem;border-radius:4px;font-size:0.65rem;font-weight:500}
+    .check-tag.success{background:rgba(16,185,129,0.15);color:var(--success)}
+    .check-tag.warning{background:rgba(245,158,11,0.15);color:var(--warning)}
+    .check-tag.info{background:rgba(59,130,246,0.15);color:var(--info)}
+    .check-tag.muted{background:rgba(148,163,184,0.1);color:var(--text-muted)}
+    
+    /* Alerts */
+    .alerts-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+    .alert-panel{background:var(--bg-card);border-radius:12px;border:1px solid var(--border);overflow:hidden}
+    .alert-panel.warning-theme{border-color:rgba(245,158,11,0.3)}
+    .alert-panel.info-theme{border-color:rgba(59,130,246,0.3)}
+    .alert-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem}
+    .alert-header.warning i{color:var(--warning)}
+    .alert-header.info i{color:var(--info)}
+    .alert-header h3{font-size:0.9rem}
+    .alert-header .badge{margin-left:auto;padding:0.15rem 0.5rem;border-radius:10px;font-size:0.7rem;font-weight:700}
+    .alert-header .badge.warning{background:var(--warning);color:var(--bg-dark)}
+    .alert-header .badge.info{background:var(--info);color:white}
+    .alert-body{padding:1rem 1.25rem}
+    .alert-item{display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0.75rem;background:var(--bg-dark);border-radius:8px;margin-bottom:0.5rem;font-size:0.8rem;border-left:3px solid}
+    .alert-item:last-child{margin-bottom:0}
+    .alert-item.warning{border-color:var(--warning)}
+    .alert-item.info{border-color:var(--info)}
+    .alert-item i{font-size:0.85rem}
+    .alert-item.warning i{color:var(--warning)}
+    .alert-item.info i{color:var(--info)}
+    .alert-item span{flex:1}
+    .alert-item .date{font-size:0.7rem;color:var(--text-muted)}
+    
+    /* Expediente Summary */
+    .expediente-summary{background:var(--bg-card);border-radius:12px;border:1px solid var(--border);padding:1.25rem;margin-bottom:1.5rem}
+    .expediente-summary .header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+    .expediente-summary h3{font-size:0.95rem;display:flex;align-items:center;gap:0.75rem}
+    .expediente-summary h3 i{color:var(--accent)}
+    .exp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+    .exp-card{background:var(--bg-dark);border-radius:10px;padding:1rem;text-align:center;border:1px solid transparent;transition:all 0.3s}
+    .exp-card:hover{border-color:var(--accent)}
+    .exp-card .number{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--text),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .exp-card .label{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;margin-top:0.25rem}
+    
+    /* Actions */
+    .actions-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0.75rem}
+    .action-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1rem 0.75rem;text-align:center;cursor:pointer;transition:all 0.3s}
+    .action-btn:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,212,170,0.15)}
+    .action-btn i{font-size:1.2rem;color:var(--accent);margin-bottom:0.5rem;display:block}
+    .action-btn span{font-size:0.72rem;color:var(--text);font-weight:500}
+    
+    /* Footer */
+    .footer{text-align:center;padding:1rem;color:var(--text-muted);font-size:0.7rem;border-top:1px solid var(--border);margin-top:1rem}
+    .footer strong{color:var(--accent)}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon"><i class="fas fa-shield-halved"></i></div>
+      <div class="logo-text">
+        <h1>PIORPI</h1>
+        <span>Plataforma de Cumplimiento PLD/FT</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="client-info">
+        <div class="name">Cliente: LL</div>
+        <div class="rfc">RFC: XXXXX</div>
+      </div>
+      <div class="date-badge"><i class="fas fa-calendar"></i> Noviembre 2025</div>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active"><i class="fas fa-clipboard-check"></i>Revisión 2025 + Plan 2026</div>
+      <div class="tab"><i class="fas fa-chart-line"></i>Métricas</div>
+      <div class="tab"><i class="fas fa-folder-open"></i>Expedientes</div>
+      <div class="tab"><i class="fas fa-file-alt"></i>Reportes</div>
+    </div>
+
+    <!-- Status Banners -->
+    <div class="status-banner">
+      <!-- 2025 Status -->
+      <div class="status-card green">
+        <div class="header-row">
+          <h3><i class="fas fa-calendar-check"></i> Ejercicio 2025 — Cierre Nov</h3>
+          <span class="badge success">92% Cumplido</span>
+        </div>
+        <div class="mini-grid">
+          <div class="mini-stat">
+            <div class="icon success"><i class="fas fa-check-circle"></i></div>
+            <div class="label">Cumplimiento</div>
+            <div class="value" style="color:var(--success)">✔ Cumple</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon success"><i class="fas fa-clipboard-check"></i></div>
+            <div class="label">Auditoría</div>
+            <div class="value" style="color:var(--success)">✔ Realizada</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon success"><i class="fas fa-folder-open"></i></div>
+            <div class="label">Expedientes</div>
+            <div class="value" style="color:var(--success)">✔ 100%</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon success"><i class="fas fa-chart-pie"></i></div>
+            <div class="label">EBR</div>
+            <div class="value" style="color:var(--success)">✔ Vigente</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon success"><i class="fas fa-user-tie"></i></div>
+            <div class="label">Benef. Ctrl.</div>
+            <div class="value" style="color:var(--success)">✔ Ident.</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon muted"><i class="fas fa-user-shield"></i></div>
+            <div class="label">PEP</div>
+            <div class="value" style="color:var(--text-muted)">No ident.</div>
+          </div>
+        </div>
+        <div class="progress-row">
+          <span>Avance anual:</span>
+          <div class="progress-bar"><div class="fill green"></div></div>
+          <strong>92%</strong>
+        </div>
+      </div>
+      
+      <!-- 2026 Status -->
+      <div class="status-card blue">
+        <div class="header-row">
+          <h3><i class="fas fa-rocket"></i> Ejercicio 2026 — Planeación</h3>
+          <span class="badge info">En preparación</span>
+        </div>
+        <div class="mini-grid">
+          <div class="mini-stat">
+            <div class="icon info"><i class="fas fa-check-circle"></i></div>
+            <div class="label">Cumplimiento</div>
+            <div class="value" style="color:var(--info)">Planear</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon warning"><i class="fas fa-clipboard-check"></i></div>
+            <div class="label">Auditoría</div>
+            <div class="value" style="color:var(--warning)">Pendiente</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon info"><i class="fas fa-folder-open"></i></div>
+            <div class="label">Expedientes</div>
+            <div class="value" style="color:var(--info)">Actualizar</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon info"><i class="fas fa-chart-pie"></i></div>
+            <div class="label">EBR</div>
+            <div class="value" style="color:var(--info)">Renovar</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon info"><i class="fas fa-user-tie"></i></div>
+            <div class="label">Benef. Ctrl.</div>
+            <div class="value" style="color:var(--info)">Validar</div>
+          </div>
+          <div class="mini-stat">
+            <div class="icon info"><i class="fas fa-user-shield"></i></div>
+            <div class="label">PEP</div>
+            <div class="value" style="color:var(--info)">Monitorear</div>
+          </div>
+        </div>
+        <div class="progress-row">
+          <span>Preparación:</span>
+          <div class="progress-bar"><div class="fill blue"></div></div>
+          <strong>15%</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checklists Side by Side -->
+    <div class="checklist-container">
+      <!-- 2025 Checklist -->
+      <div class="checklist-panel">
+        <div class="checklist-header">
+          <i class="fas fa-list-check"></i>
+          <h3>Obligaciones 2025 — Estatus Nov</h3>
+          <span class="count">8/9</span>
+        </div>
+        <div class="checklist-body">
+          <div class="check-item">
+            <div class="check-icon done"><i class="fas fa-check"></i></div>
+            <div class="check-content">
+              <h4>Auditoría Anual PLD/FT</h4>
+              <p>Auditoría interna completada satisfactoriamente</p>
+              <div class="check-meta">
+                <span class="check-tag success">Completada</span>
+                <span class="check-tag muted">15-Sep-2025</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon done"><i class="fas fa-check"></i></div>
+            <div class="check-content">
+              <h4>Evaluación Basada en Riesgo (EBR)</h4>
+              <p>Matriz de riesgo actualizada, inquilinos clasificados</p>
+              <div class="check-meta">
+                <span class="check-tag success">Vigente</span>
+                <span class="check-tag muted">Mar 2025</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon done"><i class="fas fa-check"></i></div>
+            <div class="check-content">
+              <h4>Manual de Cumplimiento</h4>
+              <p>Versión 1.5 vigente con actualizaciones normativas</p>
+              <div class="check-meta">
+                <span class="check-tag success">v1.5</span>
+                <span class="check-tag muted">Ene 2025</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon done"><i class="fas fa-check"></i></div>
+            <div class="check-content">
+              <h4>Capacitación Anual</h4>
+              <p>Personal capacitado con constancia digital</p>
+              <div class="check-meta">
+                <span class="check-tag success">Certificado</span>
+                <span class="check-tag muted">Feb 2025</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon done"><i class="fas fa-check"></i></div>
+            <div class="check-content">
+              <h4>Expedientes PIORPI Integrados</h4>
+              <p>100% de arrendatarios con expediente completo</p>
+              <div class="check-meta">
+                <span class="check-tag success">100%</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon done"><i class="fas fa-check"></i></div>
+            <div class="check-content">
+              <h4>Identificación Beneficiario Controlador</h4>
+              <p>Cadena de control documentada en PM</p>
+              <div class="check-meta">
+                <span class="check-tag success">Identificado</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon done"><i class="fas fa-check"></i></div>
+            <div class="check-content">
+              <h4>Monitoreo Acumulación / Efectivo</h4>
+              <p>Sistema activo, sin operaciones inusuales</p>
+              <div class="check-meta">
+                <span class="check-tag success">0 alertas</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon done"><i class="fas fa-check"></i></div>
+            <div class="check-content">
+              <h4>Avisos a Portal SAT</h4>
+              <p>Sin avisos requeridos (umbral no alcanzado)</p>
+              <div class="check-meta">
+                <span class="check-tag success">N/A</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon pending"><i class="fas fa-clock"></i></div>
+            <div class="check-content">
+              <h4>Renovación Expediente Arrendatario</h4>
+              <p>Vencimiento próximo - actualización requerida</p>
+              <div class="check-meta">
+                <span class="check-tag warning">Vence Ene 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2026 Checklist -->
+      <div class="checklist-panel">
+        <div class="checklist-header">
+          <i class="fas fa-calendar-alt"></i>
+          <h3>Plan de Obligaciones 2026</h3>
+          <span class="count">0/8</span>
+        </div>
+        <div class="checklist-body">
+          <div class="check-item">
+            <div class="check-icon plan"><i class="fas fa-calendar"></i></div>
+            <div class="check-content">
+              <h4>Auditoría Anual PLD/FT 2026</h4>
+              <p>Tipo: Int/Ext según riesgo. Programar Q3</p>
+              <div class="check-meta">
+                <span class="check-tag info">Programar</span>
+                <span class="check-tag muted">Sep 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon plan"><i class="fas fa-calendar"></i></div>
+            <div class="check-content">
+              <h4>Actualización EBR 2026</h4>
+              <p>Renovar clasificación de inquilinos y metodología</p>
+              <div class="check-meta">
+                <span class="check-tag info">Q1 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon plan"><i class="fas fa-calendar"></i></div>
+            <div class="check-content">
+              <h4>Manual v2.0 — Benef. Controlador + PEP</h4>
+              <p>Incluir nuevas disposiciones y criterios 2026</p>
+              <div class="check-meta">
+                <span class="check-tag info">Feb 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon plan"><i class="fas fa-calendar"></i></div>
+            <div class="check-content">
+              <h4>Capacitación Anual 2026</h4>
+              <p>Programa formal con certificación digital</p>
+              <div class="check-meta">
+                <span class="check-tag info">Feb 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon plan"><i class="fas fa-calendar"></i></div>
+            <div class="check-content">
+              <h4>Actualización Expedientes Robustecidos</h4>
+              <p>Estructura accionaria PM y docs. vigentes</p>
+              <div class="check-meta">
+                <span class="check-tag info">Q1 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon plan"><i class="fas fa-calendar"></i></div>
+            <div class="check-content">
+              <h4>Validación Beneficiario Controlador</h4>
+              <p>Actualizar cadena de control si hay cambios</p>
+              <div class="check-meta">
+                <span class="check-tag info">Continuo</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon plan"><i class="fas fa-calendar"></i></div>
+            <div class="check-content">
+              <h4>Simulacro Visita SAT</h4>
+              <p>Checklist de auditoría y preparación documental</p>
+              <div class="check-meta">
+                <span class="check-tag info">Jun 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon plan"><i class="fas fa-calendar"></i></div>
+            <div class="check-content">
+              <h4>Monitoreo Continuo 2026</h4>
+              <p>Alertas, acumulación y reportes mensuales</p>
+              <div class="check-meta">
+                <span class="check-tag info">Todo el año</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts Row -->
+    <div class="alerts-row">
+      <!-- Alertas 2025 -->
+      <div class="alert-panel warning-theme">
+        <div class="alert-header warning">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>Pendientes 2025</h3>
+          <span class="badge warning">2</span>
+        </div>
+        <div class="alert-body">
+          <div class="alert-item warning">
+            <i class="fas fa-file-signature"></i>
+            <span>Renovar expediente arrendatario principal</span>
+            <span class="date">Vence Ene 2026</span>
+          </div>
+          <div class="alert-item warning">
+            <i class="fas fa-calculator"></i>
+            <span>Validar acumulación últimos 6 meses (cierre)</span>
+            <span class="date">Dic 2025</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plan 2026 -->
+      <div class="alert-panel info-theme">
+        <div class="alert-header info">
+          <i class="fas fa-lightbulb"></i>
+          <h3>Recomendaciones 2026</h3>
+          <span class="badge info">3</span>
+        </div>
+        <div class="alert-body">
+          <div class="alert-item info">
+            <i class="fas fa-user-check"></i>
+            <span>Considerar auditoría externa (riesgo alto en arrendatario)</span>
+            <span class="date">Q3 2026</span>
+          </div>
+          <div class="alert-item info">
+            <i class="fas fa-book"></i>
+            <span>Actualizar manual a v3.0 antes de julio</span>
+            <span class="date">Jul 2026</span>
+          </div>
+          <div class="alert-item info">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Programar recertificación de personal</span>
+            <span class="date">Jul 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expediente Summary -->
+    <div class="expediente-summary">
+      <div class="header-row">
+        <h3><i class="fas fa-folder-open"></i> Resumen de Expedientes y Operaciones</h3>
+      </div>
+      <div class="exp-grid">
+        <div class="exp-card">
+          <div class="number">1</div>
+          <div class="label">Expedientes Activos</div>
+        </div>
+        <div class="exp-card">
+          <div class="number">$287,860</div>
+          <div class="label">Renta Mensual</div>
+        </div>
+        <div class="exp-card">
+          <div class="number">0</div>
+          <div class="label">Avisos SAT 2025</div>
+        </div>
+        <div class="exp-card">
+          <div class="number">0</div>
+          <div class="label">Alertas Críticas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions-grid">
+      <div class="action-btn">
+        <i class="fas fa-file-export"></i>
+        <span>Reporte Cierre 2025</span>
+      </div>
+      <div class="action-btn">
+        <i class="fas fa-calendar-plus"></i>
+        <span>Plan Anual 2026</span>
+      </div>
+      <div class="action-btn">
+        <i class="fas fa-file-pdf"></i>
+        <span>Descargar PDF</span>
+      </div>
+      <div class="action-btn">
+        <i class="fas fa-clipboard-list"></i>
+        <span>Programar Auditoría</span>
+      </div>
+      <div class="action-btn">
+        <i class="fas fa-folder-plus"></i>
+        <span>Actualizar Expediente</span>
+      </div>
+      <div class="action-btn">
+        <i class="fas fa-chart-bar"></i>
+        <span>Ver Histórico</span>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <strong>PIORPI</strong> — Plataforma de Cumplimiento PLD/FT • Revisión Nov 2025 + Planeación 2026 • Usuario: contador@cliente.mx
+  </footer>
+</body>
+</html>
